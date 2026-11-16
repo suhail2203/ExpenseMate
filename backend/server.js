@@ -289,6 +289,13 @@ app.put('/api/transactions/:id', authenticateToken, (request, response) => {
 // Start server
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+db.ready
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+    })
+  })
+  .catch(error => {
+    console.error('Database initialization failed:', error)
+    process.exit(1)
+  })
